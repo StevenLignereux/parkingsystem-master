@@ -16,8 +16,6 @@ public class FareCalculatorService {
         double difference_In_Time =   outHour -  inHour;
         double difference_In_Hours = (difference_In_Time / (1000 * 60 * 60));
 
-        System.out.println(difference_In_Hours);
-
 
         switch (ticket.getParkingSpot().getParkingType()){
             case CAR: {
