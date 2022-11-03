@@ -3,6 +3,8 @@ package com.parkit.parkingsystem.service;
 import com.parkit.parkingsystem.constants.Fare;
 import com.parkit.parkingsystem.model.Ticket;
 
+import java.math.BigDecimal;
+
 public class FareCalculatorService {
 
     public void calculateFare(Ticket ticket) {
@@ -19,19 +21,25 @@ public class FareCalculatorService {
         /**
          * Add free 30 minutes
          */
-
-        if (difference_In_Hours <= 30) {
+        if (difference_In_Hours <= 0.5) {
             difference_In_Hours = 0;
         }
 
+        /**
+         *  If the user is already came
+         */
+        if (ticket.isAlreadyCame()) {
+            double discount = ticket.getPrice() * 0.95;
+            ticket.setPrice(discount);
+        }
 
         switch (ticket.getParkingSpot().getParkingType()) {
             case CAR: {
-                ticket.setPrice((difference_In_Hours * Fare.CAR_RATE_PER_HOUR) / 60);
+                ticket.setPrice(difference_In_Hours * Fare.CAR_RATE_PER_HOUR);
                 break;
             }
             case BIKE: {
-                ticket.setPrice((difference_In_Hours * Fare.BIKE_RATE_PER_HOUR) / 60 );
+                ticket.setPrice(difference_In_Hours * Fare.BIKE_RATE_PER_HOUR);
                 break;
             }
             default:

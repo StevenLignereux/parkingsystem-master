@@ -181,4 +181,22 @@ public class FareCalculatorServiceTest {
         fareCalculatorService.calculateFare(ticket);
         assertNotEquals(0, ticket.getPrice());
     }
+
+    @Test
+    public void fareDiscountCarRegularClient(){
+        Date inTime = new Date();
+        inTime.setTime(System.currentTimeMillis() - (60 * 60 * 1000));
+        Date outTime = new Date();
+        ParkingSpot parkingSpot = new ParkingSpot(1, ParkingType.CAR, false);
+
+        ticket.setInTime(inTime);
+        ticket.setOutTime(outTime);
+        ticket.setParkingSpot(parkingSpot);
+        ticket.setAlreadyCame(true);
+
+        fareCalculatorService.calculateFare(ticket);
+
+        //prix = 1.425
+        assertEquals(1.425, ticket.getPrice() );
+    }
 }
