@@ -4,6 +4,7 @@ import com.parkit.parkingsystem.constants.Fare;
 import com.parkit.parkingsystem.model.Ticket;
 
 import java.math.BigDecimal;
+import java.text.DecimalFormat;
 
 public class FareCalculatorService {
 
@@ -29,8 +30,13 @@ public class FareCalculatorService {
          *  If the user is already came
          */
         if (ticket.isAlreadyCame()) {
-            double discount = ticket.getPrice() * 0.95;
-            ticket.setPrice(discount);
+            DecimalFormat decimalFormat = new DecimalFormat("#.###");
+            double discountTicket = ticket.getPrice() * 0.95;
+            // Add replace(',', '.') because computer in FR so the String result contains ,
+            // This throw an error when Double.valuof try to cast the value for the finalPrice
+            String resultFormat = decimalFormat.format(discountTicket).replace(',', '.');
+            double finalPrice = Double.parseDouble(resultFormat);
+            ticket.setPrice(finalPrice);
         }
 
         switch (ticket.getParkingSpot().getParkingType()) {
