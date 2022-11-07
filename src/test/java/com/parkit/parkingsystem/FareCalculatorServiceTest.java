@@ -183,7 +183,7 @@ public class FareCalculatorServiceTest {
     }
 
     @Test
-    public void fareDiscountCarRegularClient(){
+    public void fareDiscountCarRegularClient() {
         Date inTime = new Date();
         inTime.setTime(System.currentTimeMillis() - (60 * 60 * 1000));
         Date outTime = new Date();
@@ -197,6 +197,6 @@ public class FareCalculatorServiceTest {
         fareCalculatorService.calculateFare(ticket);
 
         //prix = 1.425
-        assertEquals(1.425, ticket.getPrice() );
+        assertEquals(1.425, ticket.getPrice());
     }
 }

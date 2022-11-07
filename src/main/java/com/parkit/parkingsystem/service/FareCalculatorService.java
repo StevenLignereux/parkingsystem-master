@@ -2,6 +2,7 @@ package com.parkit.parkingsystem.service;
 
 import com.parkit.parkingsystem.constants.Fare;
 import com.parkit.parkingsystem.model.Ticket;
+
 import java.text.DecimalFormat;
 
 public class FareCalculatorService {
@@ -21,17 +22,6 @@ public class FareCalculatorService {
             difference_In_Hours = 0;
         }
 
-        if (ticket.isAlreadyCame()) {
-            DecimalFormat decimalFormat = new DecimalFormat("#.###");
-            double discountTicket = ticket.getPrice() * 0.95;
-
-            // Add replace(',', '.') because computer in FR so the String result contains ,
-            // This throw an error when Double.valuof try to cast the value for the finalPrice
-            String resultFormat = decimalFormat.format(discountTicket).replace(',', '.');
-            double finalPrice = Double.parseDouble(resultFormat);
-            ticket.setPrice(finalPrice);
-        }
-
         switch (ticket.getParkingSpot().getParkingType()) {
             case CAR: {
                 ticket.setPrice(difference_In_Hours * Fare.CAR_RATE_PER_HOUR);
@@ -43,6 +33,14 @@ public class FareCalculatorService {
             }
             default:
                 throw new IllegalArgumentException("Unkown Parking Type");
+        }
+
+        if (ticket.isAlreadyCame()) {
+            DecimalFormat decimalFormat = new DecimalFormat("#.###");
+            double discountTicket = ticket.getPrice() * 0.95;
+            String resultFormat = decimalFormat.format(discountTicket).replace(',', '.');
+            double finalPrice = Double.parseDouble(resultFormat);
+            ticket.setPrice(finalPrice);
         }
     }
 }
