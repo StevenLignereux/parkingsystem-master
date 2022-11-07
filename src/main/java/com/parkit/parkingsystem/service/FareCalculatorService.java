@@ -2,8 +2,6 @@ package com.parkit.parkingsystem.service;
 
 import com.parkit.parkingsystem.constants.Fare;
 import com.parkit.parkingsystem.model.Ticket;
-
-import java.math.BigDecimal;
 import java.text.DecimalFormat;
 
 public class FareCalculatorService {
@@ -19,19 +17,14 @@ public class FareCalculatorService {
         double difference_In_Time = outHour - inHour;
         double difference_In_Hours = (difference_In_Time / (1000 * 60 * 60));
 
-        /**
-         * Add free 30 minutes
-         */
         if (difference_In_Hours <= 0.5) {
             difference_In_Hours = 0;
         }
 
-        /**
-         *  If the user is already came
-         */
         if (ticket.isAlreadyCame()) {
             DecimalFormat decimalFormat = new DecimalFormat("#.###");
             double discountTicket = ticket.getPrice() * 0.95;
+
             // Add replace(',', '.') because computer in FR so the String result contains ,
             // This throw an error when Double.valuof try to cast the value for the finalPrice
             String resultFormat = decimalFormat.format(discountTicket).replace(',', '.');
