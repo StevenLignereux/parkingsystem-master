@@ -39,13 +39,14 @@ public class TicketDAO {
         }
     }
 
-    public int getTicketOccurence(){
+    public int getTicketOccurence(String vehicleRegNumber){
         Connection con = null;
         int result = 0;
 
         try {
             con = dataBaseConfig.getConnection();
             PreparedStatement ps = con.prepareStatement(DBConstants.COUNT_TICKET);
+            ps.setString(1,vehicleRegNumber);
             ResultSet rs = ps.executeQuery();
             rs.next();
             result = rs.getInt("count(*)");
@@ -63,7 +64,7 @@ public class TicketDAO {
     public Ticket getTicket(String vehicleRegNumber) {
         Connection con = null;
         Ticket ticket = null;
-        int ticketOccurence = getTicketOccurence();
+        int ticketOccurence = getTicketOccurence(vehicleRegNumber);
         try {
             con = dataBaseConfig.getConnection();
             PreparedStatement ps = con.prepareStatement(DBConstants.GET_TICKET);
@@ -80,7 +81,7 @@ public class TicketDAO {
                 ticket.setInTime(rs.getTimestamp(4));
                 ticket.setOutTime(rs.getTimestamp(5));
 
-                ticket.setAlreadyCame(ticketOccurence > 0);
+                ticket.setAlreadyCame(ticketOccurence > 1);
             }
             dataBaseConfig.closeResultSet(rs);
             dataBaseConfig.closePreparedStatement(ps);

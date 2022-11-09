@@ -53,13 +53,17 @@ public class ParkingService {
                 ticket.setPrice(0);
                 ticket.setInTime(inTime);
 
+
+                int ticketOccurence = ticketDAO.getTicketOccurence(vehicleRegNumber);
+
+
                 if (isJUnitTest()) {
                     Date inTimeTest = new Date();
                     inTimeTest.setTime(System.currentTimeMillis() - (60 * 60 * 1000));
                     ticket.setInTime(inTimeTest);
                 }
 
-                if (ticket.isAlreadyCame()) {
+                if (ticketOccurence > 0) {
                     System.out.println("Welcome back! As a recurring user of our parking lot, you'll benefit from a 5% discount.");
                 }
 
