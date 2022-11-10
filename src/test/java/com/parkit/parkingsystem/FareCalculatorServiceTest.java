@@ -183,7 +183,12 @@ public class FareCalculatorServiceTest {
     }
 
     @Test
-    public void fareDiscountCarRegularClient() {
+    public void noDiscountForNewUsers() {
+
+    }
+
+    @Test
+    public void calculateFareCarWithDiscount() {
         Date inTime = new Date();
         inTime.setTime(System.currentTimeMillis() - (60 * 60 * 1000));
         Date outTime = new Date();
@@ -195,8 +200,12 @@ public class FareCalculatorServiceTest {
         ticket.setAlreadyCame(true);
 
         fareCalculatorService.calculateFare(ticket);
-
-        //prix = 1.425
-        assertEquals(1.425, ticket.getPrice());
+        assertEquals((Fare.CAR_RATE_PER_HOUR * 0.95), ticket.getPrice());
     }
+
+    // Tester les use case à la mano
+    // Test DAO
+    // Livrables
+    // merge sur master
+    // spotbug
 }

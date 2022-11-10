@@ -3,7 +3,7 @@ package com.parkit.parkingsystem.service;
 import com.parkit.parkingsystem.constants.Fare;
 import com.parkit.parkingsystem.model.Ticket;
 
-import java.text.DecimalFormat;
+
 
 public class FareCalculatorService {
 
@@ -36,11 +36,8 @@ public class FareCalculatorService {
         }
 
         if (ticket.isAlreadyCame()) {
-            DecimalFormat decimalFormat = new DecimalFormat("#.###");
             double discountTicket = ticket.getPrice() * 0.95;
-            String resultFormat = decimalFormat.format(discountTicket).replace(',', '.');
-            double finalPrice = Double.parseDouble(resultFormat);
-            ticket.setPrice(finalPrice);
+            ticket.setPrice(discountTicket);
         }
     }
 }
