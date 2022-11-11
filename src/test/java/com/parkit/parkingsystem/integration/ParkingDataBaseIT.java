@@ -57,7 +57,7 @@ public class ParkingDataBaseIT {
     public void testParkingACar(){
         ParkingService parkingService = new ParkingService(inputReaderUtil, parkingSpotDAO, ticketDAO);
         parkingService.processIncomingVehicle();
-        //TODO: check that a ticket is actualy saved in DB and Parking table is updated with availability
+        // check that a ticket is actualy saved in DB and Parking table is updated with availability
         Ticket testTicket = ticketDAO.getTicket("ABCDEF");
 
         assertNotNull(testTicket);
@@ -71,30 +71,17 @@ public class ParkingDataBaseIT {
     public void testParkingLotExit(){
         testParkingACar();
         ParkingService parkingService = new ParkingService(inputReaderUtil, parkingSpotDAO, ticketDAO);
-
-        // generate a ticket
-//        Ticket ticket = new Ticket();
-//
-//        ticket.setInTime(new Date(System.currentTimeMillis() - 60 * 60 * 1000));
-//        ticket.setOutTime(null);
-//        ticket.setPrice(0);
-//        ticket.setVehicleRegNumber("ABCDEF");
-//        ticket.setId(1);
-//        ticket.setParkingSpot(new ParkingSpot(1, ParkingType.CAR, false));
-
         parkingService.processExitingVehicle();
 
-        //TODO: check that the fare generated and out time are populated correctly in the database
         Ticket testTicket = ticketDAO.getTicket("ABCDEF");
 
         System.out.println("*** testParkingLotExit ticket "  + testTicket.getPrice());
         System.out.println("*** testParkingLotExit ticket "  + testTicket.getInTime());
         System.out.println("*** testParkingLotExit ticket "  + testTicket.getOutTime());
 
-//        assertNotEquals(null, testTicket.getOutTime());
-//        assertNotEquals(0, testTicket.getPrice());
         assertTrue(testTicket.getPrice() > 0);
-        assertNotNull(testTicket.getOutTime());
+        assertTrue(testTicket.getOutTime() != null);
     }
+
 
 }
