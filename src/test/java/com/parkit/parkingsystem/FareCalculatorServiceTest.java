@@ -182,10 +182,7 @@ public class FareCalculatorServiceTest {
         assertNotEquals(0, ticket.getPrice());
     }
 
-    @Test
-    public void noDiscountForNewUsers() {
-
-    }
+//    ====================TESTS WITH DISCOUNT ============================================================================
 
     @Test
     public void calculateFareCarWithDiscount() {
@@ -200,12 +197,56 @@ public class FareCalculatorServiceTest {
         ticket.setAlreadyCame(true);
 
         fareCalculatorService.calculateFare(ticket);
-        assertEquals((Fare.CAR_RATE_PER_HOUR * 0.95), ticket.getPrice());
+        assertEquals((Fare.CAR_RATE_PER_HOUR * Fare.DISCOUNT_FOR_REGULAR_USER), ticket.getPrice());
     }
 
-    // Tester les use case à la mano
-    // Test DAO
-    // Livrables
-    // merge sur master
-    // spotbug
+    @Test
+    public void calculateFareBikeWithDiscount() {
+        Date inTime = new Date();
+        inTime.setTime(System.currentTimeMillis() - (60 * 60 * 1000));
+        Date outTime = new Date();
+        ParkingSpot parkingSpot = new ParkingSpot(1, ParkingType.BIKE, false);
+
+        ticket.setInTime(inTime);
+        ticket.setOutTime(outTime);
+        ticket.setParkingSpot(parkingSpot);
+        ticket.setAlreadyCame(true);
+
+        fareCalculatorService.calculateFare(ticket);
+        assertEquals((Fare.BIKE_RATE_PER_HOUR * Fare.DISCOUNT_FOR_REGULAR_USER), ticket.getPrice());
+    }
+
+    @Test
+    public void calculateFareBikeWithLessThanOneHourParkingTimeWithDiscount() {
+        Date inTime = new Date();
+        inTime.setTime(System.currentTimeMillis() - (45 * 60 * 1000));//45 minutes parking time should give 3/4th parking fare
+        Date outTime = new Date();
+        ParkingSpot parkingSpot = new ParkingSpot(1, ParkingType.BIKE, false);
+
+        ticket.setInTime(inTime);
+        ticket.setOutTime(outTime);
+        ticket.setParkingSpot(parkingSpot);
+        ticket.setAlreadyCame(true);
+
+        fareCalculatorService.calculateFare(ticket);
+        assertEquals((0.75 * Fare.BIKE_RATE_PER_HOUR * Fare.DISCOUNT_FOR_REGULAR_USER), ticket.getPrice());
+    }
+
+    @Test
+    public void calculateFareCarWithLessThanOneHourParkingTimeWithDiscount() {
+        Date inTime = new Date();
+        inTime.setTime(System.currentTimeMillis() - (45 * 60 * 1000));//45 minutes parking time should give 3/4th parking fare
+        Date outTime = new Date();
+        ParkingSpot parkingSpot = new ParkingSpot(1, ParkingType.CAR, false);
+
+        ticket.setInTime(inTime);
+        ticket.setOutTime(outTime);
+        ticket.setParkingSpot(parkingSpot);
+        ticket.setAlreadyCame(true);
+
+        fareCalculatorService.calculateFare(ticket);
+        assertEquals((0.75 * Fare.CAR_RATE_PER_HOUR * Fare.DISCOUNT_FOR_REGULAR_USER), ticket.getPrice());
+    }
+
+
 }
