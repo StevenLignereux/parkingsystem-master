@@ -50,12 +50,12 @@ public class ParkingServiceTest {
         }
     }
 
-//    @Test
-//    public void processExitingVehicleTest(){
-//        setUpPerTest();
-//        parkingService.processExitingVehicle();
+    @Test
+    public void processExitingVehicleTest(){
+        setUpPerTest();
+        parkingService.processExitingVehicle();
 //        verify(parkingSpotDAO, Mockito.times(1)).updateParking(any(ParkingSpot.class));
-//    }
+    }
 
     @Test
     public void processExistingVehicleTestNotUpdateTicketTest() throws Exception {

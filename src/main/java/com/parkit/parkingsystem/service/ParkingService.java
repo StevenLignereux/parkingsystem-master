@@ -27,27 +27,18 @@ public class ParkingService {
         this.ticketDAO = ticketDAO;
     }
 
-    public static boolean isJUnitTest() {
-        for (StackTraceElement element : Thread.currentThread().getStackTrace()) {
-            if (element.getClassName().startsWith("org.junit.")) {
-                return true;
-            }
-        }
-        return false;
-    }
-
     public void processIncomingVehicle() {
         try {
             ParkingSpot parkingSpot = getNextParkingNumberIfAvailable();
             if (parkingSpot != null && parkingSpot.getId() > 0) {
                 String vehicleRegNumber = getVehichleRegNumber();
+
                 parkingSpot.setAvailable(false);
-                parkingSpotDAO.updateParking(parkingSpot);//allot this parking space and mark it's availability as false
+                parkingSpotDAO.updateParking(parkingSpot);
 
                 Date inTime = new Date();
+
                 Ticket ticket = new Ticket();
-                //ID, PARKING_NUMBER, VEHICLE_REG_NUMBER, PRICE, IN_TIME, OUT_TIME)
-                //ticket.setId(ticketID);
                 ticket.setParkingSpot(parkingSpot);
                 ticket.setVehicleRegNumber(vehicleRegNumber);
                 ticket.setPrice(0);
@@ -57,18 +48,20 @@ public class ParkingService {
                 int ticketOccurence = ticketDAO.getTicketOccurence(vehicleRegNumber);
 
 
-                if (isJUnitTest()) {
-                    Date inTimeTest = new Date();
-                    inTimeTest.setTime(System.currentTimeMillis() - (60 * 60 * 1000));
-                    ticket.setInTime(inTimeTest);
-                }
+//                if (isJUnitTest()) {
+//                    Date inTimeTest = new Date();
+//                    inTimeTest.setTime(System.currentTimeMillis() - (60 * 60 * 1000));
+//                    ticket.setInTime(inTimeTest);
+//                }
 
                 if (ticketOccurence > 0) {
                     System.out.println("Welcome back! As a recurring user of our parking lot, you'll benefit from a 5% discount.");
                 }
 
                 ticket.setOutTime(null);
+
                 ticketDAO.saveTicket(ticket);
+
                 System.out.println("Generated Ticket and saved in DB");
                 System.out.println("Please park your vehicle in spot number:" + parkingSpot.getId());
                 System.out.println("Recorded in-time for vehicle number:" + vehicleRegNumber + " is:" + inTime);
