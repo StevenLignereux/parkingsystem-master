@@ -40,6 +40,7 @@ public class TicketDAO {
         }finally {
             dataBaseConfig.closeConnection(con);
         }
+
     }
 
     public int getTicketOccurence(String vehicleRegNumber){
@@ -66,7 +67,7 @@ public class TicketDAO {
 
     public Ticket getTicket(String vehicleRegNumber) {
         Connection con = null;
-        Ticket ticket = null;
+        Ticket ticket = new Ticket();
         int ticketOccurence = getTicketOccurence(vehicleRegNumber);
         try {
             con = dataBaseConfig.getConnection();
