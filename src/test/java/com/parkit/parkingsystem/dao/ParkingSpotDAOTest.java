@@ -8,8 +8,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static com.parkit.parkingsystem.constants.ParkingType.CAR;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class ParkingSpotDAOTest {
     private static final DataBaseTestConfig dataBaseTestConfig = new DataBaseTestConfig();
@@ -31,17 +30,26 @@ public class ParkingSpotDAOTest {
     @Test
     public void getNextAvailableSlotTest() {
         int actual = parkingSpotDAO.getNextAvailableSlot(CAR);
-
         assertEquals(1, actual);
     }
 
+
     @Test
     public void updateParkingTest() {
-        ParkingSpot parkingSpot = new ParkingSpot(1, CAR, false);
+        ParkingSpot parkingSpotTest = new ParkingSpot(1, CAR, false);
 
-        parkingSpotDAO.updateParking(parkingSpot);
+        boolean updateIsTrue = parkingSpotDAO.updateParking(parkingSpotTest);
 
-        assertFalse(parkingSpot.isAvailable());
-        assertEquals(1, parkingSpot.getId());
+        assertTrue(updateIsTrue);
     }
+
+    @Test
+    public void updateParkingFailTest() {
+        ParkingSpot parkingSpotTest = new ParkingSpot(0, CAR, false);
+
+        boolean updateIsFalse = parkingSpotDAO.updateParking(parkingSpotTest);
+
+        assertFalse(updateIsFalse);
+    }
+
 }

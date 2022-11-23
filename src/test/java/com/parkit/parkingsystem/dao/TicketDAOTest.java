@@ -37,12 +37,12 @@ public class TicketDAOTest {
         t.setParkingSpot(new ParkingSpot(1, ParkingType.CAR, false));
         t.setVehicleRegNumber("ABCDEF");
         t.setPrice(15);
-        t.setInTime(new Date());
+        Date inTime = new Date();
+        inTime.setTime(System.currentTimeMillis() - (45 * 60 * 1000));
+        t.setInTime(inTime);
         t.setOutTime(new Date());
 
-        boolean result = ticketDAO.saveTicket(t);
-
-        assertFalse(result);
+        ticketDAO.saveTicket(t);
 
         Ticket bddTicket = ticketDAO.getTicket("ABCDEF");
 
@@ -55,58 +55,75 @@ public class TicketDAOTest {
         assertNotNull(bddTicket.getOutTime());
     }
 
-    @Test
-    public void saveTicketNoOutTimeTest() {
-        Ticket t = new Ticket();
-        t.setParkingSpot(new ParkingSpot(1, ParkingType.CAR, false));
-        t.setVehicleRegNumber("ABCDEF");
-        t.setPrice(15);
-        t.setInTime(new Date());
-        t.setOutTime(null);
-
-        boolean result = ticketDAO.saveTicket(t);
-
-        assertFalse(result);
-
-        Ticket bddTicket = ticketDAO.getTicket("ABCDEF");
-
-        assertEquals(ParkingType.CAR, bddTicket.getParkingSpot().getParkingType());
-        assertEquals(1, bddTicket.getParkingSpot().getId());
-        assertEquals("ABCDEF", bddTicket.getVehicleRegNumber());
-        assertEquals(15, bddTicket.getPrice());
-
-        assertNotNull(bddTicket.getInTime());
-        assertNull(bddTicket.getOutTime());
-    }
 
     @Test
     public void getTicketTest() {
-        Ticket t = new Ticket();
-        t.setParkingSpot(new ParkingSpot(1, ParkingType.CAR, false));
-        t.setVehicleRegNumber("ABCDEF");
-        t.setPrice(15);
-        t.setInTime(new Date());
-        t.setOutTime(new Date());
-        ticketDAO.saveTicket(t);
+        Ticket ticketTest = new Ticket();
+        ticketTest.setParkingSpot(new ParkingSpot(1, ParkingType.CAR, false));
+        ticketTest.setVehicleRegNumber("ABCDEF");
+        ticketTest.setPrice(15);
+        ticketTest.setInTime(new Date());
+        ticketTest.setOutTime(new Date());
+        ticketDAO.saveTicket(ticketTest);
 
         String vehReg = "ABCDEF";
 
         Ticket actual = ticketDAO.getTicket(vehReg);
 
-        assertEquals(t.getVehicleRegNumber(), actual.getVehicleRegNumber());
-        assertEquals(t.getPrice(), actual.getPrice());
+        assertEquals(ticketTest.getVehicleRegNumber(), actual.getVehicleRegNumber());
+        assertEquals(ticketTest.getPrice(), actual.getPrice());
 
-        assertNotNull(actual.getOutTime());
+        // Les dates n'ont pas le même format, afin de simplifier les choses on vérifie que les dates du ticket actuel ne sont pas null
         assertNotNull(actual.getInTime());
+        assertNotNull(actual.getOutTime());
+
+        assertEquals(ticketTest.getParkingSpot().getId(), actual.getParkingSpot().getId());
     }
 
+    // Vérifier que la donnée existe
     @Test
     public void getNumberOccurrenceTest() {
+        // @TODO voir à l'automatiser avec le beforeAll
+        Ticket t = new Ticket();
+        t.setParkingSpot(new ParkingSpot(1, ParkingType.CAR, false));
+        t.setVehicleRegNumber("ABCDEF");
+        t.setPrice(15);
+        Date inTime = new Date();
+        inTime.setTime(System.currentTimeMillis() - (45 * 60 * 1000));
+        t.setInTime(inTime);
+        t.setOutTime(new Date());
+
+        ticketDAO.saveTicket(t);
+
         String vehReg = "ABCDEF";
 
-        int expected = 0;
+        int expected = 1;
         int actual = ticketDAO.getTicketOccurence(vehReg);
 
         assertEquals(expected, actual);
+    }
+
+    @Test
+    public void updateTicketTest() {
+
+        Date outTime = new Date();
+
+        Ticket updateTicketTest = new Ticket();
+        updateTicketTest.setOutTime(outTime);
+
+        boolean isUpdateWork = ticketDAO.updateTicket(updateTicketTest);
+
+        assertTrue(isUpdateWork);
+    }
+
+    @Test
+    public void updateTicketFailTest() {
+
+        Ticket updateTicketFailTest = new Ticket();
+        updateTicketFailTest.setOutTime(null);
+
+        boolean isUpdateNotWork = ticketDAO.updateTicket(updateTicketFailTest);
+
+        assertFalse(isUpdateNotWork);
     }
 }
