@@ -15,11 +15,11 @@ public class ParkingService {
 
     private static final Logger logger = LogManager.getLogger("ParkingService");
 
-    private static FareCalculatorService fareCalculatorService = new FareCalculatorService();
+    private static final FareCalculatorService fareCalculatorService = new FareCalculatorService();
 
-    private InputReaderUtil inputReaderUtil;
-    private ParkingSpotDAO parkingSpotDAO;
-    private TicketDAO ticketDAO;
+    private final InputReaderUtil inputReaderUtil;
+    private final ParkingSpotDAO parkingSpotDAO;
+    private final TicketDAO ticketDAO;
 
     public ParkingService(InputReaderUtil inputReaderUtil, ParkingSpotDAO parkingSpotDAO, TicketDAO ticketDAO) {
         this.inputReaderUtil = inputReaderUtil;
@@ -27,40 +27,41 @@ public class ParkingService {
         this.ticketDAO = ticketDAO;
     }
 
-    public static boolean isJUnitTest() {
-        for (StackTraceElement element : Thread.currentThread().getStackTrace()) {
-            if (element.getClassName().startsWith("org.junit.")) {
-                return true;
-            }
-        }
-        return false;
-    }
-
     public void processIncomingVehicle() {
         try {
             ParkingSpot parkingSpot = getNextParkingNumberIfAvailable();
             if (parkingSpot != null && parkingSpot.getId() > 0) {
                 String vehicleRegNumber = getVehichleRegNumber();
+
                 parkingSpot.setAvailable(false);
-                parkingSpotDAO.updateParking(parkingSpot);//allot this parking space and mark it's availability as false
+                parkingSpotDAO.updateParking(parkingSpot);
 
                 Date inTime = new Date();
+
                 Ticket ticket = new Ticket();
-                //ID, PARKING_NUMBER, VEHICLE_REG_NUMBER, PRICE, IN_TIME, OUT_TIME)
-                //ticket.setId(ticketID);
                 ticket.setParkingSpot(parkingSpot);
                 ticket.setVehicleRegNumber(vehicleRegNumber);
                 ticket.setPrice(0);
                 ticket.setInTime(inTime);
 
-                if (isJUnitTest()) {
-                    Date inTimeTest = new Date();
-                    inTimeTest.setTime(System.currentTimeMillis() - (60 * 60 * 1000));
-                    ticket.setInTime(inTimeTest);
+
+                int ticketOccurence = ticketDAO.getTicketOccurence(vehicleRegNumber);
+
+
+//                if (isJUnitTest()) {
+//                    Date inTimeTest = new Date();
+//                    inTimeTest.setTime(System.currentTimeMillis() - (60 * 60 * 1000));
+//                    ticket.setInTime(inTimeTest);
+//                }
+
+                if (ticketOccurence > 0) {
+                    System.out.println("Welcome back! As a recurring user of our parking lot, you'll benefit from a 5% discount.");
                 }
 
                 ticket.setOutTime(null);
+
                 ticketDAO.saveTicket(ticket);
+
                 System.out.println("Generated Ticket and saved in DB");
                 System.out.println("Please park your vehicle in spot number:" + parkingSpot.getId());
                 System.out.println("Recorded in-time for vehicle number:" + vehicleRegNumber + " is:" + inTime);
@@ -76,7 +77,7 @@ public class ParkingService {
     }
 
     public ParkingSpot getNextParkingNumberIfAvailable() {
-        int parkingNumber = 0;
+        int parkingNumber;
         ParkingSpot parkingSpot = null;
         try {
             ParkingType parkingType = getVehichleType();

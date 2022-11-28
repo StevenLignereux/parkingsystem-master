@@ -1,0 +1,7 @@
+/home/steven/Projets/java/parkingsystem-master/src/test/java/com/parkit/parkingsystem/dao/TicketDAOTest.java
+/home/steven/Projets/java/parkingsystem-master/src/test/java/com/parkit/parkingsystem/integration/ParkingDataBaseIT.java
+/home/steven/Projets/java/parkingsystem-master/src/test/java/com/parkit/parkingsystem/dao/ParkingSpotDAOTest.java
+/home/steven/Projets/java/parkingsystem-master/src/test/java/com/parkit/parkingsystem/integration/service/DataBasePrepareService.java
+/home/steven/Projets/java/parkingsystem-master/src/test/java/com/parkit/parkingsystem/ParkingServiceTest.java
+/home/steven/Projets/java/parkingsystem-master/src/test/java/com/parkit/parkingsystem/FareCalculatorServiceTest.java
+/home/steven/Projets/java/parkingsystem-master/src/test/java/com/parkit/parkingsystem/integration/config/DataBaseTestConfig.java

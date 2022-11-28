@@ -11,6 +11,8 @@ public class Ticket {
     private Date inTime;
     private Date outTime;
 
+    private boolean isAlreadyCame = false;
+
     public int getId() {
         return id;
     }
@@ -57,5 +59,14 @@ public class Ticket {
 
     public void setOutTime(Date outTime) {
         this.outTime = outTime;
+    }
+
+
+    public boolean isAlreadyCame() {
+        return isAlreadyCame;
+    }
+
+    public void setAlreadyCame(boolean alreadyCame) {
+        isAlreadyCame = alreadyCame;
     }
 }
