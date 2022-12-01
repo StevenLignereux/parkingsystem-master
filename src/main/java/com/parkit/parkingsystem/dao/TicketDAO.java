@@ -5,6 +5,7 @@ import com.parkit.parkingsystem.constants.DBConstants;
 import com.parkit.parkingsystem.constants.ParkingType;
 import com.parkit.parkingsystem.model.ParkingSpot;
 import com.parkit.parkingsystem.model.Ticket;
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -19,8 +20,7 @@ public class TicketDAO {
 
     public DataBaseConfig dataBaseConfig = new DataBaseConfig();
 
-    public boolean saveTicket(Ticket ticket) {
-        boolean result;
+    public void saveTicket(Ticket ticket) {
         Connection con = null;
 
         try {
@@ -38,19 +38,19 @@ public class TicketDAO {
                     ps.setTimestamp(5, null);
                 }
 
-                result = ps.execute();
+                ps.execute();
             }
 
         } catch (Exception ex) {
             logger.error("Error fetching next available slot", ex);
-            result = false;
+
 
         } finally {
             dataBaseConfig.closeConnection(con);
         }
-        return result;
     }
 
+    @SuppressFBWarnings({"OBL_UNSATISFIED_OBLIGATION_EXCEPTION_EDGE", "OBL_UNSATISFIED_OBLIGATION_EXCEPTION_EDGE"})
     public int getTicketOccurence(String vehicleRegNumber) {
         Connection con = null;
         int result = 0;
@@ -73,6 +73,7 @@ public class TicketDAO {
         return result;
     }
 
+    @SuppressFBWarnings({"OBL_UNSATISFIED_OBLIGATION_EXCEPTION_EDGE", "OBL_UNSATISFIED_OBLIGATION_EXCEPTION_EDGE"})
     public Ticket getTicket(String vehicleRegNumber) {
         Connection con = null;
         Ticket ticket = new Ticket();
@@ -105,6 +106,7 @@ public class TicketDAO {
         return ticket;
     }
 
+    @SuppressFBWarnings({"OBL_UNSATISFIED_OBLIGATION", "ODR_OPEN_DATABASE_RESOURCE"})
     public boolean updateTicket(Ticket ticket) {
         Connection con = null;
         try {
