@@ -1,5 +1,5 @@
-/home/steven/Projets/java/parkingsystem-master/src/main/java/com/parkit/parkingsystem/App.java
 /home/steven/Projets/java/parkingsystem-master/src/main/java/com/parkit/parkingsystem/dao/TicketDAO.java
+/home/steven/Projets/java/parkingsystem-master/src/main/java/com/parkit/parkingsystem/App.java
 /home/steven/Projets/java/parkingsystem-master/src/main/java/com/parkit/parkingsystem/model/Ticket.java
 /home/steven/Projets/java/parkingsystem-master/src/main/java/com/parkit/parkingsystem/constants/ParkingType.java
 /home/steven/Projets/java/parkingsystem-master/src/main/java/com/parkit/parkingsystem/service/ParkingService.java
