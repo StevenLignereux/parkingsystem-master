@@ -5,6 +5,7 @@ import com.parkit.parkingsystem.constants.DBConstants;
 import com.parkit.parkingsystem.constants.ParkingType;
 import com.parkit.parkingsystem.model.ParkingSpot;
 import com.parkit.parkingsystem.model.Ticket;
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -49,6 +50,7 @@ public class TicketDAO {
         }
     }
 
+    @SuppressFBWarnings({"OBL_UNSATISFIED_OBLIGATION_EXCEPTION_EDGE", "OBL_UNSATISFIED_OBLIGATION_EXCEPTION_EDGE"})
     public int getTicketOccurence(String vehicleRegNumber) {
         Connection con = null;
         int result = 0;
@@ -71,6 +73,7 @@ public class TicketDAO {
         return result;
     }
 
+    @SuppressFBWarnings({"OBL_UNSATISFIED_OBLIGATION_EXCEPTION_EDGE", "OBL_UNSATISFIED_OBLIGATION_EXCEPTION_EDGE"})
     public Ticket getTicket(String vehicleRegNumber) {
         Connection con = null;
         Ticket ticket = new Ticket();
@@ -103,6 +106,7 @@ public class TicketDAO {
         return ticket;
     }
 
+    @SuppressFBWarnings({"OBL_UNSATISFIED_OBLIGATION", "ODR_OPEN_DATABASE_RESOURCE"})
     public boolean updateTicket(Ticket ticket) {
         Connection con = null;
         try {
