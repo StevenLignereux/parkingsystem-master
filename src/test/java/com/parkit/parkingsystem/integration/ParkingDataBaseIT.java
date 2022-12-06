@@ -69,6 +69,7 @@ public class ParkingDataBaseIT {
         assertNotEquals(1, nextAvailableSlot);
     }
 
+
     @Test
     public void testParkingLotExit() {
         ParkingService parkingService = new ParkingService(inputReaderUtil, parkingSpotDAO, ticketDAO);
@@ -91,6 +92,5 @@ public class ParkingDataBaseIT {
         assertNotEquals(null, abcdef.getOutTime());
         assertNotEquals(0, abcdef.getPrice());
     }
-
 
 }

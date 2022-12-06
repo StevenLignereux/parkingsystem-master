@@ -83,7 +83,7 @@ public class TicketDAOTest {
     // Vérifier que la donnée existe
     @Test
     public void getNumberOccurrenceTest() {
-        // @TODO voir à l'automatiser avec le beforeAll
+
         Ticket t = new Ticket();
         t.setParkingSpot(new ParkingSpot(1, ParkingType.CAR, false));
         t.setVehicleRegNumber("ABCDEF");

@@ -12,12 +12,16 @@ public class FareCalculatorService {
             throw new IllegalArgumentException("Out time provided is incorrect:" + ticket.getOutTime().toString());
         }
 
+        // We have to convert hours in ms
         double inHour = ticket.getInTime().getTime();
         double outHour = ticket.getOutTime().getTime();
 
         double difference_In_Time = outHour - inHour;
+
+        // We convert the difference to get it in hours
         double difference_In_Hours = (difference_In_Time / (1000 * 60 * 60));
 
+        //  We setting the difference at 0 for having free 30 minutes
         if (difference_In_Hours <= 0.5) {
             difference_In_Hours = 0;
         }
@@ -35,9 +39,11 @@ public class FareCalculatorService {
                 throw new IllegalArgumentException("Unkown Parking Type");
         }
 
+        // Reduce of 5% when the user is already came
         if (ticket.isAlreadyCame()) {
             double discountTicket = ticket.getPrice() * Fare.DISCOUNT_FOR_REGULAR_USER;
             ticket.setPrice(discountTicket);
         }
+
     }
 }
