@@ -69,6 +69,20 @@ public class ParkingDataBaseIT {
         assertNotEquals(1, nextAvailableSlot);
     }
 
+    @Test
+    public void testParkingABike() {
+        when(inputReaderUtil.readSelection()).thenReturn(1);
+
+        ParkingService parkingService = new ParkingService(inputReaderUtil, parkingSpotDAO, ticketDAO);
+        parkingService.processIncomingVehicle();
+
+        Ticket abcdef = ticketDAO.getTicket("ABCDEF");
+        assertNotNull(abcdef);
+
+        int nextAvailableSlot = parkingSpotDAO.getNextAvailableSlot(ParkingType.BIKE);
+        assertNotEquals(1, nextAvailableSlot);
+    }
+
 
     @Test
     public void testParkingLotExit() {
